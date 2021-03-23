@@ -3,13 +3,14 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { SafeAreaView } from 'react-navigation';
 import {Image} from 'react-native';
+import { Card } from 'react-native-paper';
 
 
 function Home() {
   return (
     <View style={{flex:1,}}>
       <Image
-      style= {{flex:1, height:20, width: 370, resizeMode: "cover", 
+      style= {{flex:1, height:120, width: 370, resizeMode: "cover", 
       borderRadius: 30, borderWidth:5, borderColor:"#dddddd", flexDirection:"column"}}
        source= {require('../assets/homepage2.jpeg')} />
       <View

@@ -1,4 +1,4 @@
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer, StackRouter} from 'react-navigation';
 import {createMaterialTopTabNavigator} from 'react-navigation-tabs';
 import {createStackNavigator} from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -6,13 +6,19 @@ import Home from '../Screens/Home';
 import Videos from '../Screens/Videos';
 import Sermon from '../Screens/Sermon';
 import Audio from '../Screens/Audio';
+import Contacts from '../Screens/Contacts';
+import SettingScreen from '../Screens/SettingScreen';
+import Subscription from '../Screens/Subscription';
+import Downloads from '../Screens/Downloads';
+import About from '../Screens/About'
+import AccountScreen from '../Screens/AccountScreen'
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Octicons from '@expo/vector-icons';
-import AccountScreen from '../Screens/AccountScreen'
 import { withNavigation} from 'react-navigation';
-import { useNavigation} from '@react-navigation/native';
+ //import {createDrawerNavigator} from 'react-navigation/drawer';
+
 
 
 const Tabs = createMaterialTopTabNavigator(
@@ -84,7 +90,7 @@ const Tabs = createMaterialTopTabNavigator(
 const MainScreenNavigator = createStackNavigator({
   Tabs: {
     screen: Tabs,
-    navigationOptions :{
+    navigationOptions :({navigation:{navigate}}) => ({
       title:
       <View
       style ={{
@@ -106,7 +112,7 @@ const MainScreenNavigator = createStackNavigator({
          </View>
          <View style={{marginLeft:30,marginTop:10}}>
          <TouchableOpacity 
-         onPress={()=>navigation.navigate('AccountScreen')}>
+         onPress={()=>navigate('AccountScreen')}>
          <MaterialCommunityIcons
               name="account"
               size={32}
@@ -125,9 +131,8 @@ const MainScreenNavigator = createStackNavigator({
         fontSize:50,
         color: '#fff',
       },
-    },
+    }),
   },
-
 });
 
 export default createAppContainer(MainScreenNavigator);
