@@ -17,9 +17,6 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Octicons from '@expo/vector-icons';
 import { withNavigation} from 'react-navigation';
- //import {createDrawerNavigator} from 'react-navigation/drawer';
-
-
 
 const Tabs = createMaterialTopTabNavigator(
   {
@@ -90,7 +87,7 @@ const Tabs = createMaterialTopTabNavigator(
 const MainScreenNavigator = createStackNavigator({
   Tabs: {
     screen: Tabs,
-    navigationOptions :({navigation:{navigate}}) => ({
+    navigationOptions :({navigation}) => ({
       title:
       <View
       style ={{
@@ -112,7 +109,7 @@ const MainScreenNavigator = createStackNavigator({
          </View>
          <View style={{marginLeft:30,marginTop:10}}>
          <TouchableOpacity 
-         onPress={()=>navigate('AccountScreen')}>
+         onPress={()=>navigation.openDrawer()}>
          <MaterialCommunityIcons
               name="account"
               size={32}
@@ -133,6 +130,7 @@ const MainScreenNavigator = createStackNavigator({
       },
     }),
   },
+  
 });
 
 export default createAppContainer(MainScreenNavigator);
