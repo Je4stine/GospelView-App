@@ -2,27 +2,35 @@ import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./Screens/Home";
 import { DrawerContent } from "./DrawerContent";
+import SettingScreen from './Screens/SettingScreen';
+import Subscription from './Screens/Subscription';
+import Downloads from './Screens/Downloads';
+import AccountScreen from './Screens/AccountScreen';
+import Home from "./Screens/Home";
 
 
-const Drawer = createDrawerNavigator();
+
+
+
 const Stack = createStackNavigator();
 
-function drawerStack() {
+ function drawerStack() {
   return (
-    <Stack.Navigator initialRouteName="Home" headerMode="none">
-      <Stack.Screen name="Home" component={Home} />
+    <Stack.Navigator >
+     <Stack.Screen name="Account" component = {Home}/>
     </Stack.Navigator>
-  );
+ );
 }
+const Drawer = createDrawerNavigator();
 
 export default function DrawerNavigator() {
   return (
     <NavigationContainer>
-      <Drawer.Navigator drawerContent={() => <DrawerContent />}>
-        <Drawer.Screen name="Home" component={drawerStack} headerMode="none" />
+       <Drawer.Navigator drawerContent={() => <DrawerContent />}>
+       <Drawer.Screen name="Home" component={drawerStack} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 }
+

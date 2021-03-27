@@ -25,20 +25,9 @@ export function DrawerContent(props) {
         <Drawer.Section style={styles.drawerSection}>
           <DrawerItem
             icon={({ color, size }) => (
-              <MaterialCommunityIcons
-                name=""
-                color={color}
-                size={size}
-              />
-            )}
-            label="Home"
-            onPress={() => {}}
-          />
-          <DrawerItem
-            icon={({ color, size }) => (
               <MaterialCommunityIcons name="bookmark-outline" color={color} size={size} />
             )}
-            label="WishList"
+            label="Downloads"
             onPress={() => {}}
           />
           <DrawerItem
@@ -49,7 +38,7 @@ export function DrawerContent(props) {
                 size={size}
               />
             )}
-            label="Cart"
+            label="Subscription"
             onPress={() => {}}
           />
            <DrawerItem
