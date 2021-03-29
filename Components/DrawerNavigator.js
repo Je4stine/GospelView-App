@@ -18,8 +18,12 @@ const Stack = createStackNavigator();
  function drawerStack() {
   return (
     <Stack.Navigator >
-     <Stack.Screen name="Account" component = {Home}/>
+     <Stack.Screen name="Subscription" component = {Subscription}/>
+     <Stack.Screen name =" SettingScreen" component ={SettingScreen}/>
+     <Stack.Scren name = " Downloads" component ={Downloads}/>
     </Stack.Navigator>
+
+
  );
 }
 const Drawer = createDrawerNavigator();
@@ -28,7 +32,7 @@ export default function DrawerNavigator() {
   return (
     <NavigationContainer>
        <Drawer.Navigator drawerContent={() => <DrawerContent />}>
-       <Drawer.Screen name="Home" component={drawerStack} />
+       <Drawer.Screen name="AccountScreen" component={drawerStack} />
       </Drawer.Navigator>
     </NavigationContainer>
   );
