@@ -1,36 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, SafeAreaView, ActivityIndicator, ToastAndroid, Alert} from 'react-native';
-import { loadPackages, selectPackage } from '../../redux/actions/packages';
 
-const Subscription = ({ navigation }) => {
-  const [choosePackage, setChoosePackage] = useState(null);
-  const { packages, loading } =  useSelector(state => state.packages);
+const MpesaTransaction = ({ navigation }) => {
+  const [mpesaTransactionID, setMpesaTransactionID] = useState('');
+  const { loading } =  useSelector(state => state.payment);
   const state = useSelector(state => state);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadPackages())
-  }, []);
+  // const dispatch = useDispatch();
 
   console.log(state);
-
-  const showToastWithGravityAndOffset = (packageType) => {
-    ToastAndroid.showWithGravityAndOffset(
-      `You have choosen ${packageType} package`,
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-      25,
-      50
-    );
-  } 
-
-  const handlePackageChange = packageType => {
-    setChoosePackage(packageType); 
-    const packageData = packages.find(item => item.name === packageType);
-    dispatch(selectPackage(packageData));
-    // showToastWithGravityAndOffset(packageType)
-  }
 
   const NavigateToHomeScreen = () => {
     if (choosePackage === null || choosePackage === undefined) { 
@@ -275,4 +253,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Subscription;
+export default MpesaTransaction;

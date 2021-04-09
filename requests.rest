@@ -1,0 +1,38 @@
+POST http://localhost:5000/api/v1/users/login HTTP/1.1
+content-type: application/json
+
+{
+    "emailphone": "newuser@gmail.com",
+    "password": "qwerty"
+}
+
+###
+
+POST http://localhost:5000/api/v1/payment/Mpesa HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmM0YjRjNjEzZjhkMmMyNTllMTI0NCIsInN0YXR1cyI6dHJ1ZSwiaXNBZG1pbiI6ZmFsc2UsImVtYWlsIjoibmV3dXNlckBnbWFpbC5jb20iLCJpYXQiOjE2MTc4NzY1NjMsImV4cCI6MTYxNzg4MDE2M30.5dPNUGm80oVO5b2HgZwthGiLQkg-ThTzguAOY-qgoMc
+
+{
+    "packageType": "Basic",
+    "amount": 500
+}
+
+###
+
+GET https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials
+
+Content-Type: application/json
+Authorization: Basic cGhyUEJHeDBTb1Z3OVFqQU9nR3hGNktGSUFhVXZBZm06WU14bmdjejU2eXQ3bVlFcQ==
+
+###
+GET http://localhost:5000/api/v1/payment/access 
+
+###
+GET http://localhost:5000/api/v1/videos/list
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmM0YjRjNjEzZjhkMmMyNTllMTI0NCIsInN0YXR1cyI6dHJ1ZSwiaXNBZG1pbiI6ZmFsc2UsImVtYWlsIjoibmV3dXNlckBnbWFpbC5jb20iLCJpYXQiOjE2MTc4NzY1NjMsImV4cCI6MTYxNzg4MDE2M30.5dPNUGm80oVO5b2HgZwthGiLQkg-ThTzguAOY-qgoMc
+
+###
+GET http://localhost:5000/api/v1/users/profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNmM0YjRjNjEzZjhkMmMyNTllMTI0NCIsInN0YXR1cyI6dHJ1ZSwiaXNBZG1pbiI6ZmFsc2UsImVtYWlsIjoibmV3dXNlckBnbWFpbC5jb20iLCJpYXQiOjE2MTc4ODIxMjYsImV4cCI6MTYxNzg4NTcyNn0.3YBUKclTYr-vaCJ9UW0G4DfrkxM30BepxWWRJNQTcsAg
