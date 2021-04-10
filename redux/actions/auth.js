@@ -46,10 +46,10 @@ export const login = (formData) => async (dispatch, getState) => {
   } catch (error) {
     console.log(error)
     dispatch({ type: actionTypes.AUTH_SIGNIN_FAIL }); 
-    dispatch({ 
-      type: actionTypes.GET_SERVER_ERROR, 
-      payload: error.errors[0].msg
-    });
+    // dispatch({ 
+    //   type: actionTypes.GET_SERVER_ERROR, 
+    //   payload: error.errors[0].msg
+    // });
     return false
   }
 }
@@ -84,10 +84,10 @@ export const register = (formData) => async  (dispatch) => {
   } catch (error) {
     console.log(error)
     dispatch({ type: actionTypes.AUTH_SIGNUP_FAIL });
-    dispatch({ 
-      type: actionTypes.GET_SERVER_ERROR, 
-      payload: error.errors[0].msg
-    });
+    // dispatch({ 
+    //   type: actionTypes.GET_SERVER_ERROR, 
+    //   payload: error.errors[0].msg
+    // });
   }
 }
 
