@@ -17,6 +17,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Octicons from '@expo/vector-icons';
 import { withNavigation} from 'react-navigation';
+import LogoHeader from '../Header';
 
 const Tabs = createMaterialTopTabNavigator(
   {
@@ -69,7 +70,7 @@ const Tabs = createMaterialTopTabNavigator(
     swipeEnabled: true,
     tabBarOptions: {
       style: {
-        height: 50,
+        height: 40,
         backgroundColor: '#1A1A1A',
         paddingBottom: 3,
         paddingTop: 3,
@@ -88,38 +89,7 @@ const MainScreenNavigator = createStackNavigator({
   Tabs: {
     screen: Tabs,
     navigationOptions :({navigation}) => ({
-      title:
-      <View
-      style ={{
-        display: 'flex',
-        flexDirection: 'row',
-      }}
-      >
-        <Image style={{height: 55, width: 75, marginBottom:0}}
-        source= {require('../assets/logo.png')}></Image>
-        <View style={{marginLeft:165,marginTop:10}}>
-         <TouchableOpacity>
-         <MaterialCommunityIcons
-              name="magnify"
-              size={32}
-              color=  "#fff"
-              style={{ marginLeft: 10 }}
-            />
-            </TouchableOpacity>
-         </View>
-         <View style={{marginLeft:30,marginTop:10}}>
-         <TouchableOpacity 
-         onPress={()=>navigation.openDrawer()}>
-         <MaterialCommunityIcons
-              name="account"
-              size={32}
-              color=  "#fff"
-              style={{ marginLeft: 10 }}
-            />
-            </TouchableOpacity>
-         </View>
-      </View> ,
-    
+      title: "Main Home", 
       headerStyle: {
         backgroundColor: '#1A1A1A',
       },
@@ -128,6 +98,7 @@ const MainScreenNavigator = createStackNavigator({
         fontSize:50,
         color: '#fff',
       },
+      headerTitle: props => <LogoHeader {...props} />
     }),
   },
   
