@@ -1,16 +1,18 @@
 import * as actionTypes from '../types';
 
 const initialState = {
-  error: null
+  msg: null,
+  status: null
 }
 
 const errorReducer = function(state = initialState, action) {
   switch (action.type) {
-    case actionTypes.GET_SERVER_ERROR:
+    case actionTypes.GET_SERVER_ERROR: 
       return {
         ...state,
-        error: action.payload
-      };
+        msg: action.payload.msg,
+        status: action.payload.status
+      }; 
     default:
       return state;
   }

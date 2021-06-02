@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import Swal from 'sweetalert2'
 import AuthHeader from '../Auth/AuthHeader';
 import { register } from '../../redux/actions/auth';
 
@@ -14,7 +13,7 @@ const RegisterScreen = ({navigation}) => {
   const [phoneNumber, onPhoneChange] = useState('');
   const [password, onPasswordChange] = useState('');
   const [password2, onPassword2Change] = useState(''); 
-  const { loading, isAuthenticated } = useSelector(state => state.auth);
+  const { loading } = useSelector(state => state.auth); 
   const dispatch = useDispatch();
 
   const handleRegister = async () => {
@@ -32,21 +31,13 @@ const RegisterScreen = ({navigation}) => {
       phoneNumber,
       password
     }
-    const userRegisterSuccess = await dispatch(register(data));
-    if (userRegisterSuccess) {
-      navigation.navigate('SignIn');
+    const userRegisterResponse = await dispatch(register(data));
+    if (userRegisterResponse.response) { 
+      Alert.alert('Success', `${userRegisterResponse.msg}`, [{ text: 'Ok', }, { text: "Sign In", onPress: ()=>{navigation.navigate('SignIn')} }]);
     } else {
-      Swal.fire({
-        title: 'Unauthorized',
-        icon: 'error',
-        text: 'User with Phone or Email already exists',
-      });
+      Alert.alert('Bad Request', `${userRegisterResponse.msg}`, [{ text: 'Ok', }]);
     }
-  }
-
-  if(isAuthenticated) {
-    navigation.navigate('Package');
-  }
+  } 
 
   return (
     <ImageBackground style={styles.background} source={require('../../assets/images/IMG-20210329-WA0007.jpg')} >

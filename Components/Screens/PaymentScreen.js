@@ -1,24 +1,39 @@
 import React, { useState } from 'react'; 
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View , ScrollView, Image, SafeAreaView, TouchableOpacity, Text, Alert} from 'react-native'; 
+import { StyleSheet, View , ScrollView, Image, SafeAreaView, TouchableOpacity, Text, Alert, ToastAndroid} from 'react-native'; 
 import CardPayment from '../CardPayment/Card';
 
 
-const PaymentScreen = props => {
+const PaymentScreen = ({ navigation }) => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [showCardView, setShowCardView] = useState(false);
   const packageType = useSelector(state => state.packages.package);
-  const handleCardView = () => {
+  const handleCardView = (payment) => {
+    setSelectedPayment(payment);
     setShowCardView(!showCardView);
+    showToastWithGravityAndOffset("Card payment with paypal")
+  }
+
+  const showToastWithGravityAndOffset = (msg) => {
+    ToastAndroid.showWithGravityAndOffset(
+      `${msg}`,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
   }
 
   const handleSelectedPayment = payment => {
     setSelectedPayment(payment);
-    console.log({payment})
+    if (payment.method === "Mpesa" || payment.method === "Airtel") {
+      showToastWithGravityAndOffset("Feature coming soon")
+    }
   }
 
   const handleNavigateToHome = () => {
-    Alert.alert('Navigation', 'Navigating to home after payment', [{text: 'Ok'}])
+    if (!selectedPayment) return;
+    navigation.navigate("HomeScreen");
   }
 
   return (
@@ -53,7 +68,7 @@ const PaymentScreen = props => {
           </TouchableOpacity>
         </View>
         <View style={styles.wrapper}>
-          <TouchableOpacity style={styles.cardPayment} onPress={handleCardView}>
+          <TouchableOpacity style={styles.cardPayment} onPress={handleCardView.bind(this, {method: "Card", amount: packageType.monthlyPrice})}>
             <View style={styles.innerBorder}>
               <Text>Credit / Debit Card</Text>
               <Text>|   Ksh {packageType.monthlyPrice}</Text>

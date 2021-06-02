@@ -15,13 +15,13 @@ export const login = (formData) => async (dispatch, getState) => {
       body: data
     }
 
-    const response = await fetch('http://192.168.0.102:5000/api/v1/users/login', config);
+    const response = await fetch('https://gospelview.herokuapp.com/api/v1/users/login', config);
     const res = await response.json();
 
     if (res.status === 400) {
       dispatch({ type: actionTypes.AUTH_SIGNIN_FAIL });
-      await AsyncStorage.removeItem('token')
-      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem('user');
       return false
     } else {
       dispatch({
@@ -33,14 +33,17 @@ export const login = (formData) => async (dispatch, getState) => {
             email: res.email, 
             isAdmin: res.isAdmin, 
             status: res.status, 
-            subscribed: res.subscribed
+            subscribed: res.subscribed,
+            avatar: res.avatar,
+            name: res.name,
+            phone: res.phone
           }
         }
       });
       const { auth: { token, user } } = getState();
       await AsyncStorage.setItem('token', token);
       await AsyncStorage.setItem('user', JSON.stringify(user));
-      return true
+      return true;
     }
 
   } catch (error) {
@@ -59,8 +62,7 @@ export const register = (formData) => async  (dispatch) => {
   try {
     dispatch({ type: actionTypes.AUTH_START_REQUEST });
 
-    const data = JSON.stringify(formData);
-
+    const data = JSON.stringify(formData); 
     const config = {
       method: 'POST',
       headers: {
@@ -70,24 +72,29 @@ export const register = (formData) => async  (dispatch) => {
       body: data
     }
 
-    const response = await fetch('http://192.168.0.102:5000/api/v1/users/register', config);
+    const response = await fetch('https://gospelview.herokuapp.com/api/v1/users/register', config);
     const res = await response.json();
 
     if (res.status === 400) {
       dispatch({ type: actionTypes.AUTH_SIGNUP_FAIL });
-      return false
+      dispatch({ 
+        type: actionTypes.GET_SERVER_ERROR, 
+        payload: {msg: res.message, status: res.status}
+      });
+      return {response:false, msg: res.message, status:res.status};
     } else {
       dispatch({ type: actionTypes.AUTH_SIGNUP_SUCCESS });
-      return true
+      return {response:true, msg: res.message, status:res.status}
     }
 
   } catch (error) {
     console.log(error)
     dispatch({ type: actionTypes.AUTH_SIGNUP_FAIL });
-    // dispatch({ 
-    //   type: actionTypes.GET_SERVER_ERROR, 
-    //   payload: error.errors[0].msg
-    // });
+    dispatch({ 
+      type: actionTypes.GET_SERVER_ERROR, 
+      payload: {msg: error.message, status: error.status}
+    });
+    return {response:false, msg: 'Internal server error', status:500};
   }
 }
 
@@ -104,7 +111,7 @@ export const checkValidToken = () => async (dispatch, getState) => {
       }
     }
 
-    const res = await fetch('http://192.168.0.102:5000/api/v1/users/profile', config);
+    const res = await fetch('https://gospelview.herokuapp.com/api/v1/users/profile', config);
 
     if(res.status === 401) {
       dispatch({ type: actionTypes.AUTH_SIGNIN_FAIL });
@@ -135,6 +142,36 @@ export const checkValidToken = () => async (dispatch, getState) => {
     dispatch({ type: actionTypes.AUTH_SIGNIN_FAIL });
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('user');
+    return false;
+  }
+}
+
+export const logout = () => dispatch => {
+  dispatch({ type: actionTypes.USER_LOGOUT });
+}
+
+export const uploadUserAvatar = async (image, token) => {
+  try {
+    const formData = new FormData();
+    formData.append('localUri', image.localUri)
+    console.log({image}) 
+    const config = {
+      method: 'POST',
+      headers: {  
+        Accept: "application/json", 
+        "Content-Type": "multipart/form-data",
+        "Authorization": `Bearer ${token}`
+      },
+      body: formData
+    }
+    const response = await fetch('https://gospelview.herokuapp.com/api/v1/users/avatar', config);
+    const res = await response.json(); 
+    if (res.status === 400 || res.status === 401) {  
+      return false;
+    } else { 
+      return true
+    }
+  } catch (error) { 
     return false;
   }
 }

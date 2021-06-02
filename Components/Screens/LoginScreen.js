@@ -9,13 +9,8 @@ const LoginScreen = ({navigation}) => {
   const [emailphone, onEmailPhoneChange] = useState('');
   const [password, onPasswordChange] = useState('')
   const [showPassword, setShowPassword] = useState(true);
-  const { loading, isAuthenticated } = useSelector(state => state.auth)
-  const state = useSelector(state => state);
+  const { loading } = useSelector(state => state.auth); 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(state);
-  }, [])
 
   const toggleSwitch = () => {
     setShowPassword(!showPassword);
@@ -29,17 +24,13 @@ const LoginScreen = ({navigation}) => {
       emailphone,
       password
     }
-    const userSignedIn = await dispatch(login(data));
-    console.log('-----user signed in-------', userSignedIn);
+    const userSignedIn = await dispatch(login(data)); 
     if (userSignedIn) {
-      navigation.navigate('Package');
+      navigation.navigate('PackageScreen');
     } else {
       Alert.alert('Unauthorized', 'Invalid email/phone or password ', [{ text: 'Ok' }]);
     }
-  }
-
-  if(isAuthenticated) {
-    navigation.navigate('Package');
+    // Alert.alert('Service Unavailable', 'Please Pay for the App before we can continue ', [{ text: 'Ok' }]);
   }
 
   return (

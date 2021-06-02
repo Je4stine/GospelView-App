@@ -104,7 +104,7 @@ const MainScreenNavigator = createStackNavigator({
   
 });
 
-export default createAppContainer(MainScreenNavigator);
+// export default createAppContainer(MainScreenNavigator);
 
 const styles = StyleSheet.create({
   iconCOntainer: {
@@ -113,3 +113,5 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
 });
+
+export default MainScreenNavigator;
