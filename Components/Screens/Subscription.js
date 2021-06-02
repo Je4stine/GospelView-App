@@ -5,15 +5,15 @@ import { loadPackages, selectPackage } from '../../redux/actions/packages';
 
 const Subscription = ({ navigation }) => {
   const [choosePackage, setChoosePackage] = useState(null);
-  const { packages, loading } =  useSelector(state => state.packages);
-  const state = useSelector(state => state);
+  const { packages, loading } =  useSelector(state => state.packages); 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadPackages())
-  }, []);
-
-  console.log(state);
+    const pkgResp  = async () => {
+      await dispatch(loadPackages());
+    }
+    pkgResp();
+  }, [dispatch]); 
 
   const showToastWithGravityAndOffset = (packageType) => {
     ToastAndroid.showWithGravityAndOffset(
@@ -29,7 +29,7 @@ const Subscription = ({ navigation }) => {
     setChoosePackage(packageType); 
     const packageData = packages.find(item => item.name === packageType);
     dispatch(selectPackage(packageData));
-    // showToastWithGravityAndOffset(packageType)
+    showToastWithGravityAndOffset(packageType)
   }
 
   const NavigateToHomeScreen = () => {
@@ -49,7 +49,7 @@ const Subscription = ({ navigation }) => {
       </SafeAreaView>
       { loading ? (
         <View style={{justifyContent: 'center', alignItems:"center"}}>
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color="red" />
         </View>
       ) :  (
         <View style={styles.choosePackage}> 

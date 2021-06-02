@@ -15,7 +15,7 @@ export const makePayment = paymentMethod => async (dispatch, getState) => {
     }
 
     if (paymentMethod.method ===  'Mpesa') {
-      const response = await fetch(`http://192.169.0.1:5000/api/v1/payment/${paymentMethod.method}`, config);
+      const response = await fetch(`http://192.169.0.31:5000/api/v1/payment/${paymentMethod.method}`, config);
       const res = await response.json();
       if (res.status === 401 || res.status === 404) {
         dispatch({ type: actionTypes.MAKE_PAYMENT_FAIL });
@@ -25,7 +25,7 @@ export const makePayment = paymentMethod => async (dispatch, getState) => {
         });
       }
     } else if (paymentMethod.method === 'Airtel') {
-      const response = await fetch(`http://192.169.0.1:5000/api/v1/payment/${paymentMethod.method}`, config);
+      const response = await fetch(`http://192.169.0.31:5000/api/v1/payment/${paymentMethod.method}`, config);
       const res = await response.json();
       if (res.status === 401 || res.status === 404) {
         dispatch({ type: actionTypes.MAKE_PAYMENT_FAIL });

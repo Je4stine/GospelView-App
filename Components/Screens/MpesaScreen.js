@@ -4,11 +4,8 @@ import {View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, SafeAreaVie
 
 const MpesaTransaction = ({ navigation }) => {
   const [mpesaTransactionID, setMpesaTransactionID] = useState('');
-  const { loading } =  useSelector(state => state.payment);
-  const state = useSelector(state => state);
-  // const dispatch = useDispatch();
-
-  console.log(state);
+  const { loading } =  useSelector(state => state.payment); 
+  // const dispatch = useDispatch(); 
 
   const NavigateToHomeScreen = () => {
     if (choosePackage === null || choosePackage === undefined) { 

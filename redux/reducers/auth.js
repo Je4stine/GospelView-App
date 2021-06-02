@@ -25,15 +25,10 @@ let userData = user();
 
 const initialState = {
   loading: false,
-  token: tokenData ? tokenData: null,
-  user: userData ? userData : {
-    email: null,
-    id: null,
-    subscribed: false,
-    isAdmin: false,
-    status: false
-  },
-  isAuthenticated: tokenData ? true: false
+  token: null,
+  user: {},
+  isAuthenticated: false,
+  uploading: false,
 }
 
 const authReducer = function(state = initialState, action) {
@@ -61,9 +56,27 @@ const authReducer = function(state = initialState, action) {
       return {
         ...state,
         token:  null,
-        user: null,
+        user: {},
         isAuthenticated: false,
         loading: false
+      }
+    case actionTypes.USER_LOGOUT:
+      return {
+        ...state,
+        token: null,
+        user: {},
+        isAuthenticated: false,
+      }
+    case actionTypes.UPLOAD_AVATAR_REQUEST:
+      return {
+        ...state,
+        uploading: true
+      }
+    case actionTypes.UPLOAD_AVATAR_SUCCESS:
+    case actionTypes.UPLOAD_AVATAR_FAIL:
+      return {
+        ...state,
+        uploading: false
       }
     default:
       return state;

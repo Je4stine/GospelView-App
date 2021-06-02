@@ -1,59 +1,106 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, FlatList,} from 'react-native';  
-import MusicCard from '../MusicCard';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ToastAndroid, ActivityIndicator} from 'react-native';
+import VideoCard from '../MusicCard';
+import { playCurVideo, loadVideos, downloadVideoMedia } from '../../redux/actions/media';
 
 
-const Home = () => {
-  const musics = [
-    {id: '1', thumbnail: require('../../assets/images/IMG-20210329-WA0009.jpg'), description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"},
-    {id: '2', thumbnail: require('../../assets/images/IMG-20210329-WA0013.jpg'), description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"},
-    {id: '3', thumbnail: require('../../assets/images/IMG-20210329-WA0010.jpg'), description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"},
-    {id: '4', thumbnail: require('../../assets/images/IMG-20210329-WA0020.jpg'), description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"},
-    {id: '5', thumbnail: require('../../assets/images/IMG-20210329-WA0020.jpg'), description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"},
-  ];
+const Home = ({ navigation }) => {
+  const loading = useSelector(state => state.media.loading);
+  const [videos, setVideos] = useState([]);
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    const videoRes = async () => {
+      const videos = await dispatch(loadVideos());
+      setVideos(current => videos)
+    }
+    videoRes();
+  }, [dispatch]);
+
+  const trending = videos.slice().filter(video => video.trending === true);
+  const popular = videos.slice().filter(video => video.popular === true);
+  const newMusic = videos.slice().sort((a, b) => b.createdAt - a.createdAt);
+ 
+  
+  const playVideo = (video) => {
+    dispatch(playCurVideo(video));
+    navigation.navigate("VideoPlayerScreen");
+  }
+
+  const showToastWithGravityAndOffset = () => {
+    ToastAndroid.showWithGravityAndOffset(
+      `Video downloaded`,
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50
+    );
+  } 
+
+  const downloadVideo = async video => { 
+    const videosCp = videos.slice();
+    const videoIndex = videosCp.findIndex(videocp => videocp._id === video._id);
+    let item = {...videosCp[videoIndex]};
+    item.download = true; 
+    videosCp[videoIndex] = item;
+    await dispatch(downloadVideoMedia(video))
+    setVideos(current => videosCp);
+    showToastWithGravityAndOffset();
+  }
+
 
   return (
-    <View style={styles.container}>
-      <View style={styles.trendingView}>
-        <Text style={styles.trending}>Trending</Text>
-      </View>
+    <>
+      { loading ? (
+        <View style={styles.loader}>
+          <ActivityIndicator size="large" color="red" />
+        </View>
+      ) : (
+          <View style={styles.container}> 
+            <View style={styles.trendingView}>
+            <Text style={styles.trending}>Trending</Text>
+            </View>
 
-      <View style={styles.trendingVideosView}>
-        <TouchableOpacity>
-          <Image resizeMode="contain" style={styles.trendingVideos} source={require('../../assets/images/IMG-20210329-WA0019.jpg')} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image resizeMode="contain" style={styles.trendingVideos} source={require('../../assets/images/IMG-20210329-WA0017.jpg')} />
-        </TouchableOpacity> 
-      </View>
+            <View style={styles.trendingVideosView}>
+              <TouchableOpacity onPress={playVideo.bind(this, trending[0])}>
+                <Image resizeMode="contain" style={styles.trendingVideos} source={require('../../assets/images/IMG-20210329-WA0019.jpg')} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={playVideo.bind(this, trending[1])}>
+                <Image resizeMode="contain" style={styles.trendingVideos} source={require('../../assets/images/IMG-20210329-WA0017.jpg')} />
+              </TouchableOpacity> 
+            </View>
 
-      <View style={styles.popularView}>
-        <Text style={styles.popular}>Popular</Text>
-      </View>
+            <View style={styles.popularView}>
+              <Text style={styles.popular}>Popular</Text>
+            </View>
 
-      <View style={styles.popularVideosView}>
-        <TouchableOpacity> 
-          <Image resizeMode="contain" style={styles.popularVideos} source={require('../../assets/images/IMG-20210329-WA0018.jpg')} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Image resizeMode="contain" style={styles.popularVideos} source={require('../../assets/images/IMG-20210329-WA0022.jpg')} /> 
-        </TouchableOpacity>
-        <TouchableOpacity> 
-          <Image resizeMode="contain" style={styles.popularVideos} source={require('../../assets/images/IMG-20210329-WA0015.jpg')} />
-        </TouchableOpacity>
-      </View>
+            <View style={styles.popularVideosView}>
+              <TouchableOpacity onPress={playVideo.bind(this, popular[0])}> 
+                <Image resizeMode="contain" style={styles.popularVideos} source={ popular[0] ? { uri: popular[0].thumbnail} : require('../../assets/images/IMG-20210329-WA0018.jpg')} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={playVideo.bind(this, popular[1])}>
+                <Image resizeMode="contain" style={styles.popularVideos} source={popular[1] ? { uri: popular[1].thumbnail} : require('../../assets/images/IMG-20210329-WA0018.jpg')} /> 
+              </TouchableOpacity>
+              <TouchableOpacity onPress={playVideo.bind(this, popular[2])}> 
+                <Image resizeMode="contain" style={styles.popularVideos} source={popular[2] ? { uri: popular[2].thumbnail} : require('../../assets/images/IMG-20210329-WA0018.jpg')} />
+              </TouchableOpacity>
+            </View>
 
-      <View style={styles.newMusicView}>
-        <Text style={styles.newMusic}>New Music</Text>
-      </View>
+            <View style={styles.newMusicView}>
+              <Text style={styles.newMusic}>New Music</Text>
+            </View>
 
-      <FlatList
-      keyExtractor={(item, id) => item.id} 
-      data={musics} 
-      style={styles.newMusicContainer}
-      renderItem={MusicCard}/> 
-      
-    </View>
+            <FlatList
+            keyExtractor={(item, index) => index.toString()} 
+            data={videos} 
+            style={styles.newMusicContainer}
+            renderItem={({item}) => <VideoCard item={item} playCurVideo={playVideo} downloadVideo={downloadVideo} />}/> 
+            
+          </View>
+        ) } 
+    </>
   );
 }
 
@@ -61,9 +108,13 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 1,
     justifyContent: 'flex-start',
     alignItems: 'center', 
+  },
+  loader: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   trendingView: { 
     width: '100%'

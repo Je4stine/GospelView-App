@@ -4,9 +4,8 @@ export const loadPackages = () => async dispatch => {
   try {
     dispatch({ type: actionTypes.PACKAGES_GET_REQUEST });
 
-    const response = await fetch('http://192.168.0.102:5000/api/v1/packages/list');
-    const res = await response.json();
-    console.log(res);
+    const response = await fetch('https://gospelview.herokuapp.com/api/v1/packages/list');
+    const res = await response.json(); 
     dispatch({
       type: actionTypes.PACKAGES_GET_SUCCESS,
       payload: res
