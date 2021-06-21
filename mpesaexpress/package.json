@@ -1,0 +1,25 @@
+{
+  "name": "mpesaexpress",
+  "version": "1.0.0",
+  "description": "mit",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix Gospel-",
+    "dev": "concurrently \"npm run server.js\" \"npm run Gospel-\" "
+  },
+  "keywords": [
+    "EL"
+  ],
+  "author": "ELmasha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "request": "^2.88.2"
+  }
+}

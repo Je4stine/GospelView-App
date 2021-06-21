@@ -12,6 +12,7 @@ const App = () => {
       <StatusBar backgroundColor="#1A1A1A" barStyle="light-content" />
       <MainNavigation />
     </Provider>
+    
   ); 
 };
 
