@@ -47,7 +47,7 @@
     "redux-thunk": "^2.4.1",
     "remote-redux-devtools": "^0.5.16",
     "request": "^2.88.2",
-    "sweetalert2": "^11.4.32",
+    "sweetalert2": "^11.4.33",
     "yarn": "^1.22.19"
   },
   "devDependencies": {
