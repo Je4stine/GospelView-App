@@ -1,7 +1,7 @@
-import React from 'react'; 
+import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 
-const Settings  = ({ navigation }) => {
+const Settings = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.feature}>Feature coming soon</Text>

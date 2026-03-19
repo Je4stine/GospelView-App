@@ -1,76 +1,59 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import { Audio } from 'expo-av';
-import { Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-import NextIcon from 'react-native-vector-icons/MaterialIcons';
-
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useAudioPlayer } from 'expo-audio';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 const AudioPlayer = () => {
-  const [sound, setSound] = React.useState();
-  const [playing, setPlaying] = React.useState(false);
-  console.log({playing})
   const { audioUrl, thumbnail } = useSelector(state => state.media.audio);
+  const player = useAudioPlayer(audioUrl);
 
-  async function playSound() {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync({ uri: audioUrl }
-    );
-    setSound(sound);
+  useEffect(() => {
+    return () => {
+      if (player) {
+        player.remove();
+      }
+    };
+  }, []);
 
-    console.log('Playing Sound');
-    await sound.playAsync();
-    setPlaying(true);
-  }
-
-  const pauseSound = async () => {
-    if (sound) {
-      await sound.pauseAsync();
-      setPlaying(false);
-      console.log("sound paused")
+  const togglePlayback = () => {
+    if (player.playing) {
+      player.pause();
+    } else {
+      player.play();
     }
-  }
-
-  React.useEffect(() => {
-    return sound
-      ? () => {
-          console.log('Unloading Sound');
-          sound.unloadAsync(); setPlaying(false); }
-      : undefined;
-  }, [sound]);
+  };
 
   return (
     <View style={styles.container}>
-    <View style={styles.iconWrapper}>
-      <Image style={styles.musicPlayer} source={require('../../assets/images/musicplayer.png')} resizeMode="contain" />
-    </View>
+      <View style={styles.iconWrapper}>
+        <Image style={styles.musicPlayer} source={require('../../assets/images/musicplayer.png')} resizeMode="contain" />
+      </View>
       <View style={styles.player}>
         <View style={styles.thumbnailWrapper}>
-          <Image style={styles.thumbnail} source={{ uri: thumbnail}} resizeMode="contain" />
+          <Image style={styles.thumbnail} source={{ uri: thumbnail }} resizeMode="contain" />
         </View>
         <View style={styles.controlsWrapper}>
           <TouchableOpacity>
-            <NextIcon name="skip-previous" style={styles.iconFonts} />
+            <MaterialIcons name="skip-previous" style={styles.iconFonts} />
           </TouchableOpacity>
-          <TouchableOpacity>
-            { playing ? (
-              <Icon name="pause-circle" onPress={pauseSound}  style={styles.iconFonts} />) 
+          <TouchableOpacity onPress={togglePlayback}>
+            { player.playing ? (
+              <Feather name="pause-circle" style={styles.iconFonts} />)
               : (
-              <Icon name="play-circle" onPress={playSound} style={styles.iconFonts} />)  
+              <Feather name="play-circle" style={styles.iconFonts} />)
             }
           </TouchableOpacity>
           <TouchableOpacity>
-            <NextIcon name="skip-next" style={styles.iconFonts} /> 
+            <MaterialIcons name="skip-next" style={styles.iconFonts} />
           </TouchableOpacity>
         </View>
-        {/* <Button title="Play Sound" onPress={playSound} /> */}
       </View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
@@ -78,11 +61,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffc0cb'
   },
   iconWrapper: {
-    flex: 1,
     flex: .8,
     justifyContent: 'center',
-    alignItems: "center", 
+    alignItems: "center",
     width: '100%'
+  },
+  musicPlayer: {
+    width: '80%',
+    height: '80%',
   },
   player: {
     flex: .2,
@@ -93,7 +79,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#fe8daa'
   },
-  thumbnailWrapper: { 
+  thumbnailWrapper: {
     width: '40%',
     height: "100%",
     justifyContent: "center"
@@ -103,7 +89,7 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 80
   },
-  controlsWrapper: {  
+  controlsWrapper: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
@@ -113,6 +99,6 @@ const styles = StyleSheet.create({
   iconFonts: {
     fontSize: 35
   }
- }); 
+});
 
-export default AudioPlayer
+export default AudioPlayer;

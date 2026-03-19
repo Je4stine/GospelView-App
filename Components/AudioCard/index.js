@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'; 
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 const AudioCard = ({item, playCurAudio, downloadAudio}) => {
   const [dowload, setDownload] = useState(false);
@@ -20,7 +20,7 @@ const AudioCard = ({item, playCurAudio, downloadAudio}) => {
     <>
     <View style={styles.musiccardContainer}>
       <TouchableOpacity onPress={playAudio.bind(this, item)}>
-        <Image resizeMode="contain" style={styles.musiccard} source={{ uri: item.thumbnail }} /> 
+        <Image resizeMode="contain" style={styles.musiccard} source={{ uri: item.thumbnail }} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.description}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.descriptionText}>
@@ -28,7 +28,7 @@ const AudioCard = ({item, playCurAudio, downloadAudio}) => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.download} onPress={toggleDownload}>
-        { !dowload && <Icon name="ellipsis-v" size={20} color="#1A1A1A" />}
+        { !dowload && <FontAwesome5 name="ellipsis-v" size={20} color="#1A1A1A" />}
       </TouchableOpacity>
     </View>
     { dowload && <TouchableOpacity style={styles.downloadBtn} onPress={handleDownload.bind(this, item)}><Text>Download</Text></TouchableOpacity>}
@@ -38,7 +38,7 @@ const AudioCard = ({item, playCurAudio, downloadAudio}) => {
 
 const styles = StyleSheet.create({
   musiccardContainer: {
-    width: '100%', 
+    width: '100%',
     flexDirection: 'row',
     marginVertical: 8,
     alignItems: 'center',
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   description: {
     width: '65%',
-    height: '100%', 
+    height: '100%',
     paddingHorizontal:20
   },
   descriptionText: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   download: {
     alignItems: 'flex-end',
-    justifyContent: 'flex-end', 
+    justifyContent: 'flex-end',
     alignSelf: 'center',
     width: '12%'
   },

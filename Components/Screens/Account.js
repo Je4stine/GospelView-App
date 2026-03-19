@@ -1,73 +1,77 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { View, StyleSheet, Text, TouchableOpacity, ToastAndroid } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Platform, ToastAndroid, Alert } from 'react-native';
 import { Avatar } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import * as ImagePicker from 'expo-image-picker'; 
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import { uploadUserAvatar } from '../../redux/actions/auth';
 
-const Account  = ({ navigation }) => {
+const Account = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const profile = useSelector(state => state.auth.user);
-  const token = useSelector(state => state.auth.token); 
+  const token = useSelector(state => state.auth.token);
 
   const openImagePickerAsync = async () => {
     let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert("Permission to access camera roll is required!");
+      Alert.alert("Permission Required", "Permission to access camera roll is required!");
       return;
     }
 
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (pickerResult.cancelled === true) {
+    if (pickerResult.canceled) {
       return;
     }
-    setImage({ localUri: pickerResult.uri });
-  };   
+    setImage({ localUri: pickerResult.assets[0].uri });
+  };
 
-  const showToastWithGravityAndOffset = (msg) => {
-    ToastAndroid.showWithGravityAndOffset(
-      `${msg}`,
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-      25,
-      50
-    );
-  } 
+  const showNotification = (msg) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.showWithGravityAndOffset(
+        msg,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    } else {
+      Alert.alert('Info', msg);
+    }
+  }
 
   const uploadUserAvatarAsync = async (selectedImage) => {
     const success = await uploadUserAvatar(selectedImage, token)
     if (success) {
-      showToastWithGravityAndOffset("Upload success")
+      showNotification("Upload success")
     } else {
-      showToastWithGravityAndOffset("Upload failed")
+      showNotification("Upload failed")
     }
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.avatar}>
-        <Avatar.Image source={{ uri: `${ profile.avatar ? profile.avatar : 'https://images.unsplash.com/photo-1601933973783-43cf8a7d4c5f?ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'} ` }} size={150} />
+        <Avatar.Image source={{ uri: profile.avatar ? profile.avatar : 'https://images.unsplash.com/photo-1601933973783-43cf8a7d4c5f?ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60' }} size={150} />
       </View>
       <View style={styles.change}>
         { image ? (
           <TouchableOpacity onPress={uploadUserAvatarAsync.bind(this, image)} style={styles.changeBtn}>
-          <Text style={styles.btnText}>Upload</Text> 
+          <Text style={styles.btnText}>Upload</Text>
         </TouchableOpacity>
         ): (
-          <TouchableOpacity onPress={() => showToastWithGravityAndOffset("feature coming soon")} style={styles.changeBtn}>
+          <TouchableOpacity onPress={() => showNotification("feature coming soon")} style={styles.changeBtn}>
             <Text style={styles.btnText}>Change Avatar</Text>
             <Icon name="pencil" size={25} color="#fff" />
-          </TouchableOpacity> 
+          </TouchableOpacity>
         ) }
 
       </View>
       <View style={styles.userInfo}>
         <View><Text style={styles.detail}>Name: {profile.name}</Text></View>
         <View><Text style={styles.detail}>Email: {profile.email}</Text></View>
-        <View><Text style={styles.detail}>Phone: {profile.phone}</Text></View> 
-        <View><Text style={styles.detail}>Status: {profile.status ? "Active": "Inactive"}</Text></View> 
+        <View><Text style={styles.detail}>Phone: {profile.phone}</Text></View>
+        <View><Text style={styles.detail}>Status: {profile.status ? "Active": "Inactive"}</Text></View>
       </View>
     </View>
   )
@@ -79,13 +83,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  avatar: { 
+  avatar: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 20
   },
-  change: { 
+  change: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",

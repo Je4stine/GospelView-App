@@ -5,15 +5,14 @@ import { View, Text, StyleSheet, ImageBackground, TextInput, TouchableOpacity, A
 import AuthHeader from '../Auth/AuthHeader';
 import { register } from '../../redux/actions/auth';
 
-
 const RegisterScreen = ({navigation}) => {
   const [firstName, onFirstNameChange] = useState('');
   const [lastName, onLastNameChange] = useState('');
   const [email, onEmailChange] = useState('');
   const [phoneNumber, onPhoneChange] = useState('');
   const [password, onPasswordChange] = useState('');
-  const [password2, onPassword2Change] = useState(''); 
-  const { loading } = useSelector(state => state.auth); 
+  const [password2, onPassword2Change] = useState('');
+  const { loading } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const handleRegister = async () => {
@@ -32,36 +31,36 @@ const RegisterScreen = ({navigation}) => {
       password
     }
     const userRegisterResponse = await dispatch(register(data));
-    if (userRegisterResponse.response) { 
+    if (userRegisterResponse.response) {
       Alert.alert('Success', `${userRegisterResponse.msg}`, [{ text: 'Ok', }, { text: "Sign In", onPress: ()=>{navigation.navigate('SignIn')} }]);
     } else {
       Alert.alert('Bad Request', `${userRegisterResponse.msg}`, [{ text: 'Ok', }]);
     }
-  } 
+  }
 
   return (
     <ImageBackground style={styles.background} source={require('../../assets/images/IMG-20210329-WA0007.jpg')} >
-      <AuthHeader /> 
+      <AuthHeader />
       <View style={styles.signupContainer}>
-        <View style={styles.nameView}> 
+        <View style={styles.nameView}>
           <TextInput
-           placeholderTextColor="#fff"  
+           placeholderTextColor="#fff"
            value={firstName}
            placeholder="First Name"
            onChangeText={onFirstNameChange}
            style={styles.nameInput} />
         </View>
-        <View style={styles.nameView}> 
+        <View style={styles.nameView}>
           <TextInput
-           placeholderTextColor="#fff"  
+           placeholderTextColor="#fff"
            value={lastName}
            placeholder="Last Name"
            onChangeText={onLastNameChange}
            style={styles.nameInput} />
         </View>
-        <View style={styles.emaiView}> 
+        <View style={styles.emaiView}>
           <TextInput
-           placeholderTextColor="#fff"  
+           placeholderTextColor="#fff"
            value={email}
            placeholder="someone@example.com"
            onChangeText={onEmailChange}
@@ -71,39 +70,39 @@ const RegisterScreen = ({navigation}) => {
           <Text style={styles.phonelabel}>KE+254</Text>
           <TextInput
            placeholderTextColor="#fff"
-           keyboardType="numeric" 
+           keyboardType="numeric"
            value={phoneNumber}
            onChangeText={onPhoneChange}
            maxLength={10}
-           style={styles.phoneInput} 
+           style={styles.phoneInput}
            placeholder="Phone Number"></TextInput>
         </View>
-        <View style={styles.passwordView}> 
+        <View style={styles.passwordView}>
           <TextInput
-           placeholderTextColor="#fff" 
+           placeholderTextColor="#fff"
            value={password}
            onChangeText={onPasswordChange}
            secureTextEntry={true}
-           style={styles.passwordInput} 
+           style={styles.passwordInput}
            placeholder="Password (6-16 alphanumerics)"></TextInput>
         </View>
-        <View style={styles.passwordView}> 
+        <View style={styles.passwordView}>
           <TextInput
-           placeholderTextColor="#fff" 
+           placeholderTextColor="#fff"
            value={password2}
            onChangeText={onPassword2Change}
            secureTextEntry={true}
-           style={styles.passwordInput} 
+           style={styles.passwordInput}
            placeholder="Confirm Password (6-16 alphanumerics)"></TextInput>
         </View>
         <View style={styles.signInActions}>
           { loading ? <ActivityIndicator size="large" color="#fff" /> : (
             <TouchableOpacity style={styles.signupBtn} onPress={handleRegister}>
-            <Text style={styles.white}>Sign Up</Text> 
+            <Text style={styles.white}>Sign Up</Text>
           </TouchableOpacity>
           ) }
           <TouchableOpacity style={styles.signinBtn} onPress={() => navigation.push('SignIn')}>
-            <Text style={styles.white}>Sign In</Text> 
+            <Text style={styles.white}>Sign In</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -116,9 +115,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'nunito'
   },
-  signupContainer: { 
+  signupContainer: {
     width: '100%',
     padding: 10,
     justifyContent: 'center',
@@ -169,7 +167,7 @@ const styles = StyleSheet.create({
     borderColor: '#BE0000',
     borderWidth: 1,
     borderRadius: 10,
-    width: '80%',  
+    width: '80%',
     alignItems: 'center',
     padding: 10,
     marginBottom: 15
@@ -180,10 +178,6 @@ const styles = StyleSheet.create({
   phonelabel: {
     color: '#BE0000',
     marginRight: 15,
-  },
-  phoneemailInput: {
-    color: '#fff',
-    width: 200,
   },
   signInActions: {
     flexDirection: 'row',
@@ -209,7 +203,7 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   forgotPass: {
-    alignItems:  'flex-start',
+    alignItems: 'flex-start',
     width: '80%'
   }
 });

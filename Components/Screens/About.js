@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, Linking } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { View, StyleSheet, Text, Image, TouchableOpacity, Linking, Platform, Alert } from 'react-native';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
-const AboutUs  = ({ navigation }) => {
-  const callNumber = phone => { 
+const AboutUs = ({ navigation }) => {
+  const callNumber = phone => {
     let phoneNumber = phone;
     if (Platform.OS !== 'android') {
       phoneNumber = `telprompt:${phone}`;
     }
-    else  {
+    else {
       phoneNumber = `tel:${phone}`;
     }
     Linking.canOpenURL(phoneNumber)
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   logoWrapper: {
-    width: "100%", 
+    width: "100%",
     justifyContent: "center",
     alignItems: "center"
   },

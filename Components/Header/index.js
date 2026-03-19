@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import AccountIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LogoHeader = (props) => {
   return (
     <View style={styles.container}>
       <Image resizeMode="contain" style={styles.logo} source={require('../../assets/logo.png')} />
       <TouchableOpacity>
-        <Icon name="search" size={20} color="#fff" />
+        <FontAwesome name="search" size={20} color="#fff" />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {props.navigation.openDrawer()}}>
-        <AccountIcon name="account" size={20} color="#fff" />
+        <MaterialCommunityIcons name="account" size={20} color="#fff" />
       </TouchableOpacity>
     </View>
   )
@@ -19,7 +18,7 @@ const LogoHeader = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-between',
     alignItems: 'center'

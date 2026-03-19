@@ -1,6 +1,6 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
 
 const Card = (props) => {
   const [name, onNameChange] = useState('');
@@ -15,7 +15,7 @@ const Card = (props) => {
     const data = {
       name,
       cardNumber,
-      expiry, 
+      expiry,
       cvc
     };
     props.handlePayment({...data, amount: 500, method: 'Credit/Debit Card'})
@@ -28,17 +28,17 @@ const Card = (props) => {
 
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.heading}> 
+      <View style={styles.heading}>
         <Text style={styles.carddetail}>Card details</Text>
-        <Icon name="cc-visa" size={20} color="#900" />
-        <Icon name="paypal" size={20} color="#900" />
-        <Icon name="cc-mastercard" size={20} color="#900" />
+        <FontAwesome name="cc-visa" size={20} color="#900" />
+        <FontAwesome name="paypal" size={20} color="#900" />
+        <FontAwesome name="cc-mastercard" size={20} color="#900" />
       </View>
       <View style={styles.nameOnCard}>
         <TextInput
-         style={styles.text}  
+         style={styles.text}
          value={name}
-         onChangeText={onNameChange} 
+         onChangeText={onNameChange}
          placeholder="Name on Card" />
       </View>
       <View style={styles.cardNumber}>
@@ -51,19 +51,19 @@ const Card = (props) => {
       </View>
       <View style={styles.expiry}>
         <TextInput
-         style={styles.text}  
+         style={styles.text}
          value={expiry}
          onChangeText={onExpiryChange}
-         maxLength={5} 
+         maxLength={5}
          placeholder="Valid Till (MM/YY)" />
       </View>
       <View style={styles.cvcNumber}>
         <TextInput
-         style={styles.text} 
+         style={styles.text}
          maxLength={3}
          value={cvc}
          onChangeText={onCvcChange}
-         keyboardType="numeric"  
+         keyboardType="numeric"
          placeholder="cvc" />
       </View>
       <View style={styles.payBtnView}>
@@ -133,10 +133,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 10,
-    paddingHorizontal: 8, 
+    paddingHorizontal: 8,
   },
   payBtn: {
-    width: '60%', 
+    width: '60%',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#BE0000',

@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Linking, Platform , Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; 
+import { View, StyleSheet, Text, TouchableOpacity, Linking, Platform, Alert } from 'react-native';
+import { MaterialCommunityIcons as Icon } from '@expo/vector-icons';
 
-const ContactUs  = ({ navigation }) => {
-  const callNumber = phone => { 
+const ContactUs = ({ navigation }) => {
+  const callNumber = phone => {
     let phoneNumber = phone;
     if (Platform.OS !== 'android') {
       phoneNumber = `telprompt:${phone}`;
     }
-    else  {
+    else {
       phoneNumber = `tel:${phone}`;
     }
     Linking.canOpenURL(phoneNumber)
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  support: { 
+  support: {
     width: '100%',
     justifyContent: "center",
     alignItems: "center",
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold"
   },
-  phoneWrapper: { 
+  phoneWrapper: {
     width: '100%',
     justifyContent: "center",
     alignItems: "center",
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     color: "red"
   },
   emailWrapper: {
-    flexDirection: "row", 
+    flexDirection: "row",
     width: "100%",
     justifyContent: "center",
     alignItems: "center",

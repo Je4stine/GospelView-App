@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { View, StyleSheet, Text, FlatList, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { View, StyleSheet, Text, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { loadDownloads, playCurAudio, playCurVideo } from '../../redux/actions/media';
 
-const Downloads  = ({ navigation }) => {
+const Downloads = ({ navigation }) => {
   const [downloads, setDownloads] = useState([]);
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
@@ -13,18 +12,16 @@ const Downloads  = ({ navigation }) => {
     const getDownloads = async () => {
       setLoading(true);
       const downloadsRes = await dispatch(loadDownloads())
-      setDownloads(current => downloadsRes)
+      setDownloads(downloadsRes)
       setLoading(false);
     }
     getDownloads();
   }, [dispatch]);
-  
+
   const playDownloadVideo = media => {
     if (media) {
       dispatch(playCurVideo({videoUrl: media.mediaUrl, mediaId: media.mediaId}))
       navigation.navigate("VideoPlayerScreen")
-    } else {
-      return;
     }
   }
 
@@ -32,11 +29,8 @@ const Downloads  = ({ navigation }) => {
     if (media) {
       dispatch(playCurAudio({audioUrl: media.mediaUrl, thumbnail: media.thumbnail, mediaId: media.mediaId}))
       navigation.navigate("AudioPlayerScreen")
-    } else {
-      return;
     }
   }
-
 
   const Download = ({ item, playDownloadVideo, playDownloadAudio }) => {
     const playMedia = (media) => {
@@ -45,11 +39,11 @@ const Downloads  = ({ navigation }) => {
       } else {
         playDownloadAudio(media)
       }
-    } 
+    }
     return (
       <View style={styles.musiccardContainer}>
         <TouchableOpacity onPress={playMedia.bind(this, item)}>
-        <Image resizeMode="contain" style={styles.musiccard} source={{ uri: item.thumbnail}} /> 
+        <Image resizeMode="contain" style={styles.musiccard} source={{ uri: item.thumbnail}} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.description}>
           <Text numberOfLines={4} ellipsizeMode="tail" style={styles.descriptionText}>
@@ -57,7 +51,6 @@ const Downloads  = ({ navigation }) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.download}>
-          {/* <Icon name="ellipsis-v" size={20} color="#1A1A1A" /> */}
         </TouchableOpacity>
       </View>
     )
@@ -71,12 +64,12 @@ const Downloads  = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.downloads}>
           <FlatList
-          data={downloads} 
-          keyExtractor={(item, index) => index.toString()} 
-          renderItem={({item,}) => <Download item={item} playDownloadVideo={playDownloadVideo} playDownloadAudio={playDownloadAudio} />} />
+          data={downloads}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({item}) => <Download item={item} playDownloadVideo={playDownloadVideo} playDownloadAudio={playDownloadAudio} />} />
         </View>
       </View>
-    ) } 
+    ) }
     </>
   )
 }
@@ -92,8 +85,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  downloads: {
+    flex: 1,
+    width: '100%',
+  },
   musiccardContainer: {
-    width: '100%', 
+    width: '100%',
     flexDirection: 'row',
     marginVertical: 8,
     paddingHorizontal: 8,
@@ -108,7 +105,7 @@ const styles = StyleSheet.create({
   },
   description: {
     width: '65%',
-    height: '100%', 
+    height: '100%',
     paddingHorizontal:20
   },
   descriptionText: {
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
   },
   download: {
     alignItems: 'flex-end',
-    justifyContent: 'flex-end', 
+    justifyContent: 'flex-end',
     alignSelf: 'center',
     width: '12%'
   }

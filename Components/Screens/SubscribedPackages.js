@@ -1,18 +1,22 @@
 import React from 'react';
-import { View, StyleSheet, Text, Button, ToastAndroid } from 'react-native'; 
+import { View, StyleSheet, Text, Button, Platform, ToastAndroid, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 
-const Subscription  = ({ navigation }) => {
+const Subscription = ({ navigation }) => {
   const packageType = useSelector(state => state.packages.package);
 
-  const showToastWithGravityAndOffset = () => {
-    ToastAndroid.showWithGravityAndOffset(
-      `Feature coming soon`,
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-      25,
-      50
-    );
+  const showNotification = () => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.showWithGravityAndOffset(
+        'Feature coming soon',
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    } else {
+      Alert.alert('Info', 'Feature coming soon');
+    }
   }
 
   return (
@@ -42,7 +46,7 @@ const Subscription  = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.upgrade}>
-        <Button title="Upgrade" color="red" onPress={showToastWithGravityAndOffset} />
+        <Button title="Upgrade" color="red" onPress={showNotification} />
       </View>
     </View>
   )
@@ -54,7 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  current: { 
+  current: {
     width: '100%',
     justifyContent:"center",
     alignItems: "center",
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold"
   },
-  nameWrapper: { 
+  nameWrapper: {
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
@@ -83,28 +87,28 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff"
   },
-  description: { 
+  description: {
     width: "100%",
   },
-  pricing: { 
+  pricing: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
     height: 50
   },
-  monthlyTxt: { 
+  monthlyTxt: {
     fontSize: 16,
     color: "red"
   },
-  annuallyTxt: { 
+  annuallyTxt: {
     fontSize: 16,
     color: "red"
   },
   amount: {
     fontSize: 16
   },
-  limits: { 
+  limits: {
     width: "100%",
     paddingHorizontal: 80
   },

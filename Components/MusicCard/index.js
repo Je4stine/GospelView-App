@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, Image, StyleSheet, View, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import { FontAwesome } from '@expo/vector-icons';
 
-const VideoCard = ({ item, playCurVideo, downloadVideo }) => { 
+const VideoCard = ({ item, playCurVideo, downloadVideo }) => {
 
   const playVideo = (video) => {
     playCurVideo(video);
@@ -15,7 +15,7 @@ const VideoCard = ({ item, playCurVideo, downloadVideo }) => {
   return (
     <View style={styles.musiccardContainer}>
         <TouchableOpacity onPress={playVideo.bind(this, item)}>
-          <Image resizeMode="contain" style={styles.musiccard} source={{ uri: item.thumbnail }} /> 
+          <Image resizeMode="contain" style={styles.musiccard} source={{ uri: item.thumbnail }} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.description}>
           <Text numberOfLines={4} ellipsizeMode="tail" style={styles.descriptionText}>
@@ -23,7 +23,7 @@ const VideoCard = ({ item, playCurVideo, downloadVideo }) => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.download} onPress={download.bind(this, item)}>
-          { item.download ? <Icon name="check-circle" size={20} color="green" /> : <Icon name="cloud-download" size={20} color="#BE0000" />}
+          { item.download ? <FontAwesome name="check-circle" size={20} color="green" /> : <FontAwesome name="cloud-download" size={20} color="#BE0000" />}
         </TouchableOpacity>
       </View>
   )
@@ -31,7 +31,7 @@ const VideoCard = ({ item, playCurVideo, downloadVideo }) => {
 
 const styles = StyleSheet.create({
   musiccardContainer: {
-    width: '100%', 
+    width: '100%',
     flexDirection: 'row',
     marginVertical: 5,
     alignItems: 'center',
@@ -45,15 +45,15 @@ const styles = StyleSheet.create({
   },
   description: {
     width: '65%',
-    height: '100%', 
-    paddingHorizontal: 8, 
+    height: '100%',
+    paddingHorizontal: 8,
   },
   descriptionText: {
     color: '#fff'
   },
   download: {
     alignItems: 'center',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   }
 });
 

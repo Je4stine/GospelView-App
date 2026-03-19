@@ -1,33 +1,37 @@
-import React, { useState } from 'react'; 
-import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View , ScrollView, Image, SafeAreaView, TouchableOpacity, Text, Alert, ToastAndroid} from 'react-native'; 
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { StyleSheet, View, ScrollView, Image, SafeAreaView, TouchableOpacity, Text, Platform, ToastAndroid, Alert } from 'react-native';
 import CardPayment from '../CardPayment/Card';
-
 
 const PaymentScreen = ({ navigation }) => {
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [showCardView, setShowCardView] = useState(false);
   const packageType = useSelector(state => state.packages.package);
+
+  const showNotification = (msg) => {
+    if (Platform.OS === 'android') {
+      ToastAndroid.showWithGravityAndOffset(
+        msg,
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        50
+      );
+    } else {
+      Alert.alert('Info', msg);
+    }
+  }
+
   const handleCardView = (payment) => {
     setSelectedPayment(payment);
     setShowCardView(!showCardView);
-    showToastWithGravityAndOffset("Card payment with paypal")
-  }
-
-  const showToastWithGravityAndOffset = (msg) => {
-    ToastAndroid.showWithGravityAndOffset(
-      `${msg}`,
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM,
-      25,
-      50
-    );
+    showNotification("Card payment with paypal")
   }
 
   const handleSelectedPayment = payment => {
     setSelectedPayment(payment);
     if (payment.method === "Mpesa" || payment.method === "Airtel") {
-      showToastWithGravityAndOffset("Feature coming soon")
+      showNotification("Feature coming soon")
     }
   }
 
@@ -44,13 +48,13 @@ const PaymentScreen = ({ navigation }) => {
         </View>
       </SafeAreaView>
       <View style={styles.paymentContainer}>
-        <View style={[styles.wrapper], styles.noborder}>
+        <View style={styles.noborder}>
           <View style={styles.packageContainer}>
             <Text style={styles.packageType}>{packageType.name} Package</Text>
             <Text style={styles.packageType}>Monthly</Text>
           </View>
         </View>
-        <View style={[styles.wrapper], styles.noborder}>
+        <View style={styles.noborder}>
           <View style={styles.paymentMethod}>
             <Text style={styles.method}>Payment Method</Text>
           </View>
@@ -58,25 +62,25 @@ const PaymentScreen = ({ navigation }) => {
         <View style={styles.wrapper}>
           <TouchableOpacity style={styles.paymentLogo} onPress={handleSelectedPayment.bind(this, {method: 'Mpesa', amount: packageType.monthlyPrice})}>
             <Image resizeMode="contain" style={styles.mpesalogo} source={require('../../assets/images/mpesalogo.png')} />
-            <Text>|   Ksh {packageType.monthlyPrice}</Text>
+            <Text>|   USD {packageType.monthlyPrice}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.wrapper}>
           <TouchableOpacity style={styles.paymentLogo} onPress={handleSelectedPayment.bind(this, {method: 'Airtel', amount: packageType.monthlyPrice})}>
             <Image resizeMode="contain" style={styles.mpesalogo} source={require('../../assets/images/airtellogo_prev_ui.png')} />
-            <Text>|   Ksh {packageType.monthlyPrice}</Text>
+            <Text>|   USD {packageType.monthlyPrice}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.wrapper}>
           <TouchableOpacity style={styles.cardPayment} onPress={handleCardView.bind(this, {method: "Card", amount: packageType.monthlyPrice})}>
             <View style={styles.innerBorder}>
               <Text>Credit / Debit Card</Text>
-              <Text>|   Ksh {packageType.monthlyPrice}</Text>
+              <Text>|   USD {packageType.monthlyPrice}</Text>
             </View>
           </TouchableOpacity>
         </View>
         {showCardView && <CardPayment showCard={handleCardView} handlePayment={handleSelectedPayment} />}
-        <View style={styles.continueView}> 
+        <View style={styles.continueView}>
           <TouchableOpacity style={styles.continueBtn} onPress={handleNavigateToHome}>
             <Text style={styles.continueText}>Continue</Text>
           </TouchableOpacity>
@@ -93,10 +97,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f4f4f4'
   },
-  logoContainer: { 
-    width: '100%', 
+  logoContainer: {
+    width: '100%',
     alignItems: 'center',
-    alignSelf: 'flex-start', 
+    alignSelf: 'flex-start',
     position: 'absolute',
     top: 20,
   },
@@ -107,14 +111,14 @@ const styles = StyleSheet.create({
   logoView: {
     flex: 1,
     justifyContent: 'center'
-  }, 
+  },
   paymentContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
     paddingVertical: 10,
-    paddingHorizontal: 20, 
+    paddingHorizontal: 20,
   },
   wrapper: {
     width: '100%',
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,  
+    shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#fff',
     marginTop: 50
@@ -146,11 +150,8 @@ const styles = StyleSheet.create({
     color: '#BE0000',
     fontSize: 18
   },
-  package: {
-    flexDirection: 'row'
-  },
   paymentMethod: {
-    alignItems: 'flex-start', 
+    alignItems: 'flex-start',
     width: '100%',
     paddingHorizontal: 20,
   },
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,  
+    shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#fff'
   },
@@ -187,14 +188,14 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,
-    shadowRadius: 2,  
+    shadowRadius: 2,
     elevation: 5,
     backgroundColor: '#fff',
     borderWidth: 0.5
   },
   innerBorder: {
     borderWidth: 0.5,
-    borderRadius: 5, 
+    borderRadius: 5,
     width: '100%',
     paddingVertical: 10,
     paddingHorizontal: 5,
@@ -202,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   continueView: {
-    width: '100%', 
+    width: '100%',
     paddingHorizontal: 10,
     paddingVertical: 10,
     alignItems: 'center',

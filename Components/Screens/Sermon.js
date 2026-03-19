@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ActivityIndicator} from 'react-native'; 
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native';
 import AudioCard from '../AudioCard';
 import { playCurAudio, loadAudios } from '../../redux/actions/media';
-
 
 const Sermon = ({ navigation }) => {
   const loading = useSelector(state => state.media.loading);
@@ -14,7 +13,7 @@ const Sermon = ({ navigation }) => {
   useEffect(() => {
     const audioRes = async () => {
       const audios = await dispatch(loadAudios());
-      setAudios(current => [...current, ...audios])
+      setAudios(audios)
     }
     audioRes();
   },[dispatch]);
@@ -28,8 +27,6 @@ const Sermon = ({ navigation }) => {
     if (audio) {
       dispatch(playCurAudio(audio));
       navigation.navigate("AudioPlayerScreen")
-    } else {
-      return;
     }
   }
 
@@ -49,19 +46,19 @@ const Sermon = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity onPress={playAudio.bind(this, favorites[1])}>
               <Image resizeMode="contain" style={styles.favoriteAudios} source={ favorites[1] ? { uri: favorites[1].thumbnail }: require('../../assets/images/IMG-20210329-WA0017.jpg')} />
-            </TouchableOpacity> 
-          </View> 
+            </TouchableOpacity>
+          </View>
 
           <View style={styles.popularVideosView}>
-            <TouchableOpacity onPress={playAudio.bind(this, catholicAudios[0])}> 
+            <TouchableOpacity onPress={playAudio.bind(this, catholicAudios[0])}>
               <Text>Catholic</Text>
               <Image resizeMode="contain" style={styles.popularVideos} source={ catholicAudios[0] ? { uri: catholicAudios[0].thumbnail }: require('../../assets/images/IMG-20210329-WA0018.jpg')} />
             </TouchableOpacity>
             <TouchableOpacity onPress={playAudio.bind(this, evangelicalAudios[0])}>
             <Text>Evangelical</Text>
-              <Image resizeMode="contain" style={styles.popularVideos} source={ evangelicalAudios[0] ? { uri: evangelicalAudios[0].thumbnail }: require('../../assets/images/IMG-20210329-WA0013.jpg')} /> 
+              <Image resizeMode="contain" style={styles.popularVideos} source={ evangelicalAudios[0] ? { uri: evangelicalAudios[0].thumbnail }: require('../../assets/images/IMG-20210329-WA0013.jpg')} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={playAudio.bind(this, sdaVideos[0])}> 
+            <TouchableOpacity onPress={playAudio.bind(this, sdaVideos[0])}>
               <Text>SDA</Text>
               <Image resizeMode="contain" style={styles.popularVideos} source={ sdaVideos[0] ? { uri: sdaVideos[0].thumbnail }: require('../../assets/images/IMG-20210329-WA0019.jpg')} />
             </TouchableOpacity>
@@ -72,38 +69,37 @@ const Sermon = ({ navigation }) => {
           </View>
 
           <FlatList
-          keyExtractor={(item, index) => index.toString()} 
-          data={audios} 
+          keyExtractor={(item, index) => index.toString()}
+          data={audios}
           style={styles.newMusicContainer}
-          renderItem={({ item }) => <AudioCard item={item} playCurAudio={playAudio} />}/> 
-          
+          renderItem={({ item }) => <AudioCard item={item} playCurAudio={playAudio} />}/>
+
         </View>
-      ) } 
+      ) }
     </>
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'flex-start',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   loader: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center"
   },
-  favoriteView: { 
+  favoriteView: {
     width: '100%'
   },
   favorite: {
-    fontSize: 15, 
+    fontSize: 15,
     paddingHorizontal: 20,
     fontWeight: "bold"
   },
-  favoriteAudioView: {  
+  favoriteAudioView: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
@@ -112,18 +108,18 @@ const styles = StyleSheet.create({
   },
   favoriteAudios: {
     width: 150,
-    height: 150, 
+    height: 150,
     borderRadius: 20
   },
-  popularView: { 
+  popularView: {
     width: '100%'
   },
   popular: {
-    fontSize: 15, 
+    fontSize: 15,
     paddingHorizontal: 20,
     fontWeight: "bold"
   },
-  popularVideosView: { 
+  popularVideosView: {
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'space-around',
@@ -132,20 +128,20 @@ const styles = StyleSheet.create({
   },
   popularVideos: {
     width: 90,
-    height: 90, 
+    height: 90,
     borderRadius: 10
-  }, 
-  newMusicView: { 
+  },
+  newMusicView: {
     width: '100%'
   },
   newMusic: {
-    fontSize: 15, 
-    paddingHorizontal: 20, 
-  }, 
+    fontSize: 15,
+    paddingHorizontal: 20,
+  },
   newMusicContainer: {
-    width: '100%', 
+    width: '100%',
     paddingHorizontal: 20
-  }, 
+  },
 });
 
 export default Sermon;

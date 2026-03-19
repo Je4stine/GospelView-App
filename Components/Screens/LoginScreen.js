@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View, Text, StyleSheet, ImageBackground, TextInput, Switch, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import AuthHeader from '../Auth/AuthHeader';
-import { login } from '../../redux/actions/auth'; 
-
+import { login } from '../../redux/actions/auth';
 
 const LoginScreen = ({navigation}) => {
   const [emailphone, onEmailPhoneChange] = useState('');
   const [password, onPasswordChange] = useState('')
   const [showPassword, setShowPassword] = useState(true);
-  const { loading } = useSelector(state => state.auth); 
+  const { loading } = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const toggleSwitch = () => {
@@ -24,13 +23,12 @@ const LoginScreen = ({navigation}) => {
       emailphone,
       password
     }
-    const userSignedIn = await dispatch(login(data)); 
+    const userSignedIn = await dispatch(login(data));
     if (userSignedIn) {
       navigation.navigate('PackageScreen');
     } else {
       Alert.alert('Unauthorized', 'Invalid email/phone or password ', [{ text: 'Ok' }]);
     }
-    // Alert.alert('Service Unavailable', 'Please Pay for the App before we can continue ', [{ text: 'Ok' }]);
   }
 
   return (
@@ -40,19 +38,19 @@ const LoginScreen = ({navigation}) => {
         <View style={styles.phoneemailView}>
           <Text style={styles.phonelabel}>KE+254</Text>
           <TextInput
-           placeholderTextColor="#fff" 
-           style={styles.phoneemailInput} 
+           placeholderTextColor="#fff"
+           style={styles.phoneemailInput}
            value={emailphone}
            onChangeText={onEmailPhoneChange}
            placeholder="Phone number/email"></TextInput>
         </View>
-        <View style={styles.password}> 
+        <View style={styles.password}>
           <TextInput
-           placeholderTextColor="#fff" 
+           placeholderTextColor="#fff"
            secureTextEntry={showPassword}
            value={password}
            onChangeText={onPasswordChange}
-           style={styles.phoneemailInput} 
+           style={styles.phoneemailInput}
            placeholder="Password (6-16 alphanumerics)"></TextInput>
           <Switch
             onValueChange={toggleSwitch}
@@ -62,15 +60,15 @@ const LoginScreen = ({navigation}) => {
         <View style={styles.signInActions}>
           { loading ? <ActivityIndicator size="small" color="#fff" /> : (
             <TouchableOpacity style={styles.signinBtn} onPress={handleSignIn}>
-            <Text style={styles.white}>Sign In</Text> 
+            <Text style={styles.white}>Sign In</Text>
           </TouchableOpacity>
           ) }
           <TouchableOpacity style={styles.signupBtn} onPress={() => navigation.push('SignUp')}>
-            <Text style={styles.white}>Sign Up</Text> 
+            <Text style={styles.white}>Sign Up</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.forgotPass}>
-          <TouchableOpacity onPress={() => alert('Forgot Password')}>
+          <TouchableOpacity onPress={() => Alert.alert('Forgot Password', 'Password reset coming soon')}>
           <Text style={styles.white}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
@@ -84,9 +82,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'nunito'
   },
-  loginContainer: { 
+  loginContainer: {
     width: '100%',
     padding: 10,
     justifyContent: 'center',
@@ -107,7 +104,7 @@ const styles = StyleSheet.create({
     borderColor: '#BE0000',
     borderWidth: 1,
     borderRadius: 10,
-    width: '80%', 
+    width: '80%',
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -148,7 +145,7 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   forgotPass: {
-    alignItems:  'flex-start',
+    alignItems: 'flex-start',
     width: '80%'
   }
 });
